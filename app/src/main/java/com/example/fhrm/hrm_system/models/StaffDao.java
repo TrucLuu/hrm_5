@@ -7,7 +7,7 @@ import java.sql.SQLException;
 /**
  * Created by luuhoangtruc on 20/01/2016.
  */
-public class StaffDao extends DatabaseHelper implements ModelDao<Staff>{
+public class StaffDao extends ModelDao<Staff>{
 
     public StaffDao(Context context) {
         super(context);
@@ -25,7 +25,7 @@ public class StaffDao extends DatabaseHelper implements ModelDao<Staff>{
         values.put(DbConstants.STAFF_COLUMN_STATUS_ID, staff.getStatusId());
         values.put(DbConstants.STAFF_COLUMN_POSITION_ID, staff.getPositionId());
         values.put(DbConstants.STAFF_COLUMN_DEPARTMENT_ID, staff.getDepartmentId());
-        rowIdInserted  = sDatabase.insert(DbConstants.TABLE_STAFF, null, values);
+        rowIdInserted  = database.insert(DbConstants.TABLE_STAFF, null, values);
         close();
         return rowIdInserted;
     }
