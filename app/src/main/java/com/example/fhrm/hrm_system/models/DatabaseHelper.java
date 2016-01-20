@@ -4,12 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.sql.SQLException;
-
 /**
  * Created by luuhoangtruc on 20/01/2016.
  */
-public class DatabaseHelper {
+public class DatabaseHelper extends SQLiteOpenHelper{
 
     // ALL STATIC VARIABLE
     /**
@@ -40,38 +38,20 @@ public class DatabaseHelper {
             + DbConstants.STAFF_COLUMN_DEPARTMENT_ID + " REFERENCES, "
             + DbConstants.TABLE_DEPARTMENT + "(" + DbConstants.DEPARTMENT_COLUMN_ID + "), FOREIGN" + ")";
 
-    protected static Context sContext;
-    public static SQLiteDatabase sDatabase;
-    protected OpenHelper mOpenHelper;
-
     public DatabaseHelper(Context context) {
-        DatabaseHelper.sContext = context;
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public DatabaseHelper open() throws SQLException {
-        mOpenHelper = new OpenHelper(sContext);
-        sDatabase = mOpenHelper.getWritableDatabase();
-        return this;
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE_DEPARTMENT);
+        db.execSQL(CREATE_TABLE_STAFF);
     }
 
-    public void close() {
-        mOpenHelper.close();
-    }
-
-    private static class OpenHelper extends SQLiteOpenHelper {
-        public OpenHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(CREATE_TABLE_DEPARTMENT);
-            db.execSQL(CREATE_TABLE_STAFF);
-        }
-
-        public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
-            db.execSQL("DROP TABLE IF EXISTS " + DbConstants.TABLE_DEPARTMENT);
-            db.execSQL("DROP TABLE IF EXISTS " + DbConstants.TABLE_STAFF);
-            onCreate(db);
-        }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + DbConstants.TABLE_DEPARTMENT);
+        db.execSQL("DROP TABLE IF EXISTS " + DbConstants.TABLE_STAFF);
+        onCreate(db);
     }
 }
