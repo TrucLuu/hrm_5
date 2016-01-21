@@ -17,14 +17,11 @@ public class DepartmentDao extends ModelDao<Department> {
         super(context);
     }
 
-    /**
-     * Insert Department
-     */
-    public long insert(Department departmentId) throws SQLException {
+    public long insert(Department department) throws SQLException {
         open();
         long rowInsert = 0;
         ContentValues values = new ContentValues();
-        values.put(DbConstants.DEPARTMENT_COLUMN_NAME, departmentId.getNameDepartment());
+        values.put(DbConstants.DEPARTMENT_COLUMN_NAME, department.getNameDepartment());
         rowInsert = database.insert(DbConstants.TABLE_DEPARTMENT, null, values);
         close();
         return rowInsert;
