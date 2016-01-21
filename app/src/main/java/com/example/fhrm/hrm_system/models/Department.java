@@ -7,15 +7,15 @@ public class Department {
     private int departmentId;
     private String nameDepartment;
 
-    public Department () {
+    public Department() {
 
     }
 
-    public Department (String nameDepartment) {
+    public Department(String nameDepartment) {
         this.nameDepartment = nameDepartment;
     }
 
-    public Department (String nameDepartment, int departmentId) {
+    public Department(int departmentId, String nameDepartment) {
         this.departmentId = departmentId;
         this.nameDepartment = nameDepartment;
     }

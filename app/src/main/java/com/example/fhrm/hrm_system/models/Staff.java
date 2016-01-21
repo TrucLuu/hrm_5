@@ -17,7 +17,8 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(String name, String date_of_birth, String birth_place, String phone_number, int dept_id, int status_id, int activity_id, int position_id) {
+    public Staff(int staffId, String name, String date_of_birth, String birth_place, String phone_number, int dept_id, int status_id, int position_id) {
+        this.staffId = staffId;
         this.name = name;
         this.dateOfBirth = date_of_birth;
         this.placeOfBirth = birth_place;
