@@ -2,9 +2,11 @@ package com.example.fhrm.hrm_system.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.fhrm.hrm_system.R;
@@ -14,6 +16,8 @@ import com.example.fhrm.hrm_system.models.DepartmentDao;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
 
 
 /**
@@ -41,5 +45,12 @@ public class HomeFragment extends Fragment {
         }
         arrayDepartment = new ArrayAdapterDepartment(getContext(), android.R.layout.simple_list_item_1, departmentList);
         listDepartment.setAdapter(arrayDepartment);
+        listDepartment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            replace(getFragmentManager(), R.id.flContent,
+                    DepartmentFragment.newInstance(departmentList.get(position).getDepartmentId()));
+            }
+        });
     }
 }
