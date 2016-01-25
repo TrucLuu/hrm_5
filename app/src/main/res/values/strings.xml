@@ -6,4 +6,6 @@
     <string name="nav_item_about">About</string>
     <string name="nav_item_exit">Exit</string>
     <string name="drawer_header_text">Framgia Human Resource</string>
+    <string name="titleDialog">Load More Staff</string>
+    <string name="contentDialog">Loading more...</string>
 </resources>
