@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_home"
+            android:checked="true"
+            android:title="@string/nav_item_home" />
+        <item
+            android:id="@+id/navigation_item_add_staff"
+            android:title="@string/nav_item_add_staff" />
+        <item
+            android:id="@+id/navigation_item_about"
+            android:title="@string/nav_item_about" />
+        <item
+            android:id="@+id/navigation_item_exit"
+            android:title="@string/nav_item_exit" />
+    </group>
+</menu>
