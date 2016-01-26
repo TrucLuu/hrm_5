@@ -1,7 +1,9 @@
 package com.example.fhrm.hrm_system.contants;
 
+import android.app.Dialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.widget.TextView;
 
 
 /**
@@ -12,5 +14,10 @@ public class FragmentControl {
         fragmentManager.beginTransaction()
                 .replace(layout_id, fragment)
                 .commit();
+    }
+
+    public static void mySetText (Dialog dialog, int idInput, TextView textInput, String text){
+        textInput = (TextView)dialog.findViewById(idInput);
+        textInput.setText(text);
     }
 }

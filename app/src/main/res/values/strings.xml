@@ -7,5 +7,15 @@
     <string name="nav_item_exit">Exit</string>
     <string name="drawer_header_text">Framgia Human Resource</string>
     <string name="titleDialog">Load More Staff</string>
+    <string name="titleDialogStaff">Staff Information</string>
     <string name="contentDialog">Loading more...</string>
+
+    <string name="staffName">Name</string>
+    <string name="placeOfBirth">Place Of Birth</string>
+    <string name="dateOfBirth">Date of Birth</string>
+    <string name="phoneNumber">Phone Number</string>
+    <string name="departmentName">Department</string>
+    <string name="status">Status</string>
+    <string name="position">Position</string>
+
 </resources>
