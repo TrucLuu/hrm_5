@@ -49,7 +49,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             replace(getFragmentManager(), R.id.flContent,
-                    DepartmentFragment.newInstance(departmentList.get(position).getDepartmentId()));
+                    DepartmentFragment.newInstance(departmentList.get(position).getDepartmentId(),
+                                                   departmentList.get(position).getNameDepartment()));
             }
         });
     }

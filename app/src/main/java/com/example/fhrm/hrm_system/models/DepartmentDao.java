@@ -49,7 +49,7 @@ public class DepartmentDao extends ModelDao<Department> {
             null, null, null, null);
         if (cursor == null)
             cursor.moveToFirst();
-        Department department = new Department(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
+        Department department = new Department(cursor);
         return department;
     }
 
@@ -63,9 +63,7 @@ public class DepartmentDao extends ModelDao<Department> {
         Cursor cursor = database.rawQuery(selectQuerry,null);
         if (cursor.moveToFirst()) {
             do {
-                Department department = new Department();
-                department.setDepartmentId(Integer.parseInt(cursor.getString(0)));
-                department.setNameDepartment(cursor.getString(1));
+                Department department = new Department(cursor);
                 departmentList.add(department);
             } while (cursor.moveToNext());
         }

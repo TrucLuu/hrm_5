@@ -1,5 +1,7 @@
 package com.example.fhrm.hrm_system.models;
 
+import android.database.Cursor;
+
 /**
  * Created by luuhoangtruc on 20/01/2016.
  */
@@ -14,7 +16,15 @@ public class Staff {
     private int statusId;
     private int positionId;
 
-    public Staff() {
+    public Staff(Cursor cursor) {
+        this.staffId =cursor.getInt(cursor.getColumnIndexOrThrow("staffId"));
+        this.name =cursor.getString(cursor.getColumnIndexOrThrow("name"));
+        this.dateOfBirth =cursor.getString( cursor.getColumnIndexOrThrow("dateOfBirth"));
+        this.placeOfBirth =cursor.getString( cursor.getColumnIndexOrThrow("placeOfBirth"));
+        this.phoneNumber =cursor.getString( cursor.getColumnIndexOrThrow("phoneNumber"));
+        this.departmentId =cursor.getInt(cursor.getColumnIndexOrThrow("departmentId"));
+        this.statusId =cursor.getInt(cursor.getColumnIndexOrThrow("statusId"));
+        this.positionId =cursor.getInt( cursor.getColumnIndexOrThrow("positionId"));
     }
 
     public Staff(int staffId, String name, String date_of_birth, String birth_place, String phone_number, int dept_id, int status_id, int position_id) {

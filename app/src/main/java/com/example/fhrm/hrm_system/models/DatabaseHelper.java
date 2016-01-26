@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * staff table create statement
      */
     private static final String CREATE_TABLE_STAFF = "CREATE TABLE " + DbConstants.TABLE_STAFF + "("
-            + DbConstants.STAFF_COLUMN_ID + " INTEGER PRIMARY KEY , "
+            + DbConstants.STAFF_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DbConstants.STAFF_COLUMN_NAME + " TEXT , "
             + DbConstants.STAFF_COLUMN_POB + " TEXT , "
             + DbConstants.STAFF_COLUMN_DOB + " TEXT , "

@@ -3,6 +3,7 @@ package com.example.fhrm.hrm_system.models;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class StaffDao extends ModelDao<Staff> {
         Cursor cursor = database.rawQuery(selectQuerry, null);
         if (cursor.moveToFirst()) {
             do {
-                Staff staff = new Staff();
+                Staff staff = new Staff(cursor);
                 staff.setStaffId(Integer.parseInt(cursor.getString(0)));
                 staff.setName(cursor.getString(1));
                 staff.setDateOfBirth(cursor.getString(2));
@@ -109,5 +110,25 @@ public class StaffDao extends ModelDao<Staff> {
         database.delete(DbConstants.TABLE_STAFF, DbConstants.STAFF_COLUMN_ID
                 + " = ? ", new String[]{String.valueOf(staff.getStaffId())});
         close();
+    }
+    /**
+     * Get Staff by Id Department
+     */
+    public List<Staff> getStaffById (int index, int pageSize, int pageIndex) throws SQLException {
+        open();
+        List<Staff> staffList = new ArrayList<Staff>();
+        String selectQuerry = "SELECT * FROM " + DbConstants.TABLE_STAFF
+                +" WHERE "+ DbConstants.TABLE_STAFF +"."
+                + DbConstants.STAFF_COLUMN_DEPARTMENT_ID +"="+
+                index +" LIMIT " + pageSize + " OFFSET " + pageIndex*pageSize;
+        Cursor cursor = database.rawQuery(selectQuerry, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Staff staff = new Staff(cursor);
+                staffList.add(staff);
+            } while (cursor.moveToNext());
+        }
+        close();
+        return staffList;
     }
 }
