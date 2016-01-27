@@ -10,12 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.fhrm.hrm_system.R;
 import com.example.fhrm.hrm_system.adapter.ArrayAdapterDepartment;
 import com.example.fhrm.hrm_system.adapter.ArrayAdapterStaff;
+import com.example.fhrm.hrm_system.contants.EnumClass;
+import com.example.fhrm.hrm_system.contants.FragmentControl;
 import com.example.fhrm.hrm_system.models.Department;
 import com.example.fhrm.hrm_system.models.DepartmentDao;
 import com.example.fhrm.hrm_system.models.Staff;
@@ -26,11 +29,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.fhrm.hrm_system.contants.EnumClass.PositionCode.fromPositionValue;
+import static com.example.fhrm.hrm_system.contants.EnumClass.StatusCode.fromValue;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.mySetText;
+
 /**
  * Created by luuhoangtruc on 25/01/2016.
  */
 public class DepartmentFragment extends Fragment {
-    private static final String TAG = Department.class.getSimpleName();
+    private static final String TAG = DepartmentFragment.class.getSimpleName();
     private String value;
     private String nameDepartment;
     public ListView listStaff;
@@ -40,7 +47,6 @@ public class DepartmentFragment extends Fragment {
     private int pageSize = 30;
     private ProgressDialog mProgressDialog;
     private boolean isFinished;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,6 +69,24 @@ public class DepartmentFragment extends Fragment {
         arrayStaff = new ArrayAdapterStaff(getContext(), android.R.layout.simple_list_item_1, staffList);
         listStaff.setAdapter(arrayStaff);
         getActivity().setTitle(nameDepartment);
+        listStaff.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final Dialog dialogStaffInfor = new Dialog(view.getContext());
+            dialogStaffInfor.setContentView(R.layout.fragment_information_staff);
+            dialogStaffInfor.setTitle(R.string.titleDialogStaff);
+            TextView textSomeField = null;
+            mySetText(dialogStaffInfor, R.id.textStaffName, textSomeField, staffList.get(position).getName());
+            mySetText(dialogStaffInfor, R.id.textPlaceOfBirth, textSomeField, staffList.get(position).getPlaceOfBirth());
+            mySetText(dialogStaffInfor, R.id.textDateOfBirth, textSomeField, staffList.get(position).getDateOfBirth());
+            mySetText(dialogStaffInfor, R.id.textPhoneNumber, textSomeField, staffList.get(position).getPhoneNumber());
+            mySetText(dialogStaffInfor, R.id.textDepartment, textSomeField, nameDepartment);
+            mySetText(dialogStaffInfor, R.id.textStatus, textSomeField, fromValue(staffList.get(position).getStatusId()).getText());
+            mySetText(dialogStaffInfor, R.id.textPosition, textSomeField, fromPositionValue(staffList.get(position).getPositionId()).getText());
+            dialogStaffInfor.show();
+            }
+        });
+
         listStaff.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -71,7 +95,7 @@ public class DepartmentFragment extends Fragment {
                 int count = listStaff.getCount();
                 if (scrollState == SCROLL_STATE_IDLE) {
                     if (listStaff.getLastVisiblePosition() >= count - threshold) {
-                        if(isFinished) return;
+                        if (isFinished) return;
                         LoadMoreDataTask asyncTask = new LoadMoreDataTask();
                         asyncTask.execute();
                     }

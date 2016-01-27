@@ -5,4 +5,6 @@
     <dimen name="drawer_padding">10dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dp55">55dp</dimen>
+    <dimen name="dp100">100dp</dimen>
+    <dimen name="sp40">40sp</dimen>
 </resources>
