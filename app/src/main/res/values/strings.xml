@@ -18,4 +18,11 @@
     <string name="status">Status</string>
     <string name="position">Position</string>
 
+
+    <string name="saveSuccess">Save Data to Database Success</string>
+    <string name="saveUnSuccess">Do not save</string>
+
+    <string name="btnBack">BACK</string>
+    <string name="btnSave">SAVE</string>
+
 </resources>

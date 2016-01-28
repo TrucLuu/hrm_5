@@ -23,15 +23,15 @@ public class StaffDao extends ModelDao<Staff> {
      */
     public long insert(Staff staff) throws SQLException {
         open();
-        long rowIdInserted = 0;
+        long rowIdInserted = -1;
         ContentValues values = new ContentValues();
         values.put(DbConstants.STAFF_COLUMN_NAME, staff.getName());
         values.put(DbConstants.STAFF_COLUMN_POB, staff.getPlaceOfBirth());
         values.put(DbConstants.STAFF_COLUMN_DOB, staff.getDateOfBirth());
         values.put(DbConstants.STAFF_COLUMN_PHONE_NUM, staff.getPhoneNumber());
+        values.put(DbConstants.STAFF_COLUMN_DEPARTMENT_ID, staff.getDepartmentId());
         values.put(DbConstants.STAFF_COLUMN_STATUS_ID, staff.getStatusId());
         values.put(DbConstants.STAFF_COLUMN_POSITION_ID, staff.getPositionId());
-        values.put(DbConstants.STAFF_COLUMN_DEPARTMENT_ID, staff.getDepartmentId());
         rowIdInserted = database.insert(DbConstants.TABLE_STAFF, null, values);
         close();
         return rowIdInserted;

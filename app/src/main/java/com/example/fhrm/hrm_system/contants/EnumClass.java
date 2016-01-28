@@ -5,20 +5,20 @@ package com.example.fhrm.hrm_system.contants;
  */
 public class EnumClass {
 
-    public static final int TRAINEE_CODE = 0;
-    public static final int INTERNSHIP_CODE = 1;
-    public static final int OFFICIAL_STAFF_CODE = 2;
-    public static final int MAX_STATUS_CODE = 3;
+    public static final int TRAINEE_CODE = 1;
+    public static final int INTERNSHIP_CODE = 2;
+    public static final int OFFICIAL_STAFF_CODE = 3;
+    public static final int MAX_STATUS_CODE = 4;
 
-    public static final int MANAGER_CODE = 0;
-    public static final int VPG_CODE = 1;
-    public static final int LEADER_CODE = 2;
-    public static final int QA_CODE = 3;
-    public static final int STAFF_CODE = 4;
-    public static final int TESTER_CODE = 5;
-    public static final int COMTOR_CODE = 6;
-    public static final int BRIDGE_SE_CODE = 7;
-    public static final int MAX_POI_CODE = 8;
+    public static final int MANAGER_CODE = 1;
+    public static final int VPG_CODE = 2;
+    public static final int LEADER_CODE = 3;
+    public static final int QA_CODE = 4;
+    public static final int STAFF_CODE = 5;
+    public static final int TESTER_CODE = 6;
+    public static final int COMTOR_CODE = 7;
+    public static final int BRIDGE_SE_CODE = 8;
+    public static final int MAX_POI_CODE = 9;
 
     public enum StatusCode {
 

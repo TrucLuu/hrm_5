@@ -20,4 +20,8 @@ public class FragmentControl {
         textInput = (TextView)dialog.findViewById(idInput);
         textInput.setText(text);
     }
+
+    public static final String [] status ={"Trainee","Intern Ship","Official Staff"};
+    public static final String [] position ={"Manager", "Group Leader","Leader","Quality Assurance","Staff"
+            ,"Tester","Comtor","Bridge System Engineer"};
 }
