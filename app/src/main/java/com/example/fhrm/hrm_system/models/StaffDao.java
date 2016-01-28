@@ -42,7 +42,9 @@ public class StaffDao extends ModelDao<Staff> {
      */
     public int updateStaff(Staff staff) throws SQLException {
         open();
-        ContentValues values = new ContentValues();
+        int rowInsert = 0;
+        ContentValues values;
+        values= new ContentValues();
         values.put(DbConstants.STAFF_COLUMN_NAME, staff.getName());
         values.put(DbConstants.STAFF_COLUMN_POB, staff.getPlaceOfBirth());
         values.put(DbConstants.STAFF_COLUMN_DOB, staff.getDateOfBirth());
@@ -50,34 +52,47 @@ public class StaffDao extends ModelDao<Staff> {
         values.put(DbConstants.STAFF_COLUMN_STATUS_ID, staff.getStatusId());
         values.put(DbConstants.STAFF_COLUMN_POSITION_ID, staff.getPositionId());
         values.put(DbConstants.STAFF_COLUMN_DEPARTMENT_ID, staff.getDepartmentId());
+        String[] whereArgs = {String.valueOf(staff.getStaffId())};
+        rowInsert = database.update(DbConstants.TABLE_STAFF, values, DbConstants.STAFF_COLUMN_ID + " = ?", whereArgs);
         close();
-        return database.update(DbConstants.TABLE_DEPARTMENT, values, DbConstants.STAFF_COLUMN_ID
-                + " = ? ", new String[]{String.valueOf(staff.getStaffId())});
+        return rowInsert;
     }
 
     /**
      * Get Single Staff
      */
     public Staff getStaff(int staffId) throws SQLException {
-        Cursor cursor = database.query(DbConstants.TABLE_DEPARTMENT,
+        open();
+        Staff staff = null;
+        String selection = DbConstants.STAFF_COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(staffId)};
+        Cursor cursor = database.query(DbConstants.TABLE_STAFF,
                 new String[]{DbConstants.STAFF_COLUMN_ID,
                         DbConstants.STAFF_COLUMN_NAME,
+                        DbConstants.STAFF_COLUMN_POB,
                         DbConstants.STAFF_COLUMN_DOB,
                         DbConstants.STAFF_COLUMN_PHONE_NUM,
-                        DbConstants.STAFF_COLUMN_POB,
-                        DbConstants.STAFF_COLUMN_POSITION_ID,
+                        DbConstants.STAFF_COLUMN_DEPARTMENT_ID,
                         DbConstants.STAFF_COLUMN_STATUS_ID,
-                        DbConstants.STAFF_COLUMN_DEPARTMENT_ID},
-                DbConstants.STAFF_COLUMN_ID + "= ?", new String[]{String.valueOf(staffId)},
-                null, null, null, null);
-        if (cursor == null)
-            cursor.moveToFirst();
-        Staff staff = new Staff(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),
-                Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
-                Integer.parseInt(cursor.getString(7)));
+                        DbConstants.STAFF_COLUMN_POSITION_ID},
+                selection, selectionArgs,
+                null, null, "1");
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_ID));
+            String name = cursor.getString(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_NAME));
+            String placeOfBirth = cursor.getString(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_POB));
+            String dateOfBirth = cursor.getString(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_DOB));
+            String phone = cursor.getString(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_PHONE_NUM));
+            int departmentId = cursor.getInt(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_DEPARTMENT_ID));
+            int statusId = cursor.getInt(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_STATUS_ID));
+            int positionId = cursor.getInt(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_POSITION_ID));
+            staff = new Staff(id, name, placeOfBirth, dateOfBirth, phone, departmentId, statusId, positionId);
+            staff.setStatusId(id);
+        }
+        close();
         return staff;
     }
+
     /**
      * Get all contact
      */
@@ -103,24 +118,27 @@ public class StaffDao extends ModelDao<Staff> {
         close();
         return staffList;
     }
+
     /**
      * Delete
      */
     public void deleteStaff(Staff staff) throws SQLException {
+        open();
         database.delete(DbConstants.TABLE_STAFF, DbConstants.STAFF_COLUMN_ID
                 + " = ? ", new String[]{String.valueOf(staff.getStaffId())});
         close();
     }
+
     /**
      * Get Staff by Id Department
      */
-    public List<Staff> getStaffById (int index, int pageSize, int pageIndex) throws SQLException {
+    public List<Staff> getStaffById(int index, int pageSize, int pageIndex) throws SQLException {
         open();
         List<Staff> staffList = new ArrayList<Staff>();
         String selectQuerry = "SELECT * FROM " + DbConstants.TABLE_STAFF
-                +" WHERE "+ DbConstants.TABLE_STAFF +"."
-                + DbConstants.STAFF_COLUMN_DEPARTMENT_ID +"="+
-                index +" LIMIT " + pageSize + " OFFSET " + pageIndex*pageSize;
+                + " WHERE " + DbConstants.TABLE_STAFF + "."
+                + DbConstants.STAFF_COLUMN_DEPARTMENT_ID + "=" +
+                index + " LIMIT " + pageSize + " OFFSET " + pageIndex * pageSize;
         Cursor cursor = database.rawQuery(selectQuerry, null);
         if (cursor.moveToFirst()) {
             do {

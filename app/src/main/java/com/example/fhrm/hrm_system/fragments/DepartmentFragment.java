@@ -32,6 +32,7 @@ import java.util.List;
 import static com.example.fhrm.hrm_system.contants.EnumClass.PositionCode.fromPositionValue;
 import static com.example.fhrm.hrm_system.contants.EnumClass.StatusCode.fromValue;
 import static com.example.fhrm.hrm_system.contants.FragmentControl.mySetText;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
 
 /**
  * Created by luuhoangtruc on 25/01/2016.
@@ -72,18 +73,27 @@ public class DepartmentFragment extends Fragment {
         listStaff.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final Dialog dialogStaffInfor = new Dialog(view.getContext());
-            dialogStaffInfor.setContentView(R.layout.fragment_information_staff);
-            dialogStaffInfor.setTitle(R.string.titleDialogStaff);
-            TextView textSomeField = null;
-            mySetText(dialogStaffInfor, R.id.textStaffName, textSomeField, staffList.get(position).getName());
-            mySetText(dialogStaffInfor, R.id.textPlaceOfBirth, textSomeField, staffList.get(position).getPlaceOfBirth());
-            mySetText(dialogStaffInfor, R.id.textDateOfBirth, textSomeField, staffList.get(position).getDateOfBirth());
-            mySetText(dialogStaffInfor, R.id.textPhoneNumber, textSomeField, staffList.get(position).getPhoneNumber());
-            mySetText(dialogStaffInfor, R.id.textDepartment, textSomeField, nameDepartment);
-            mySetText(dialogStaffInfor, R.id.textStatus, textSomeField, fromValue(staffList.get(position).getStatusId()).getText());
-            mySetText(dialogStaffInfor, R.id.textPosition, textSomeField, fromPositionValue(staffList.get(position).getPositionId()).getText());
-            dialogStaffInfor.show();
+                Dialog dialogStaffInfor = new Dialog(view.getContext());
+                dialogStaffInfor.setContentView(R.layout.fragment_information_staff);
+                dialogStaffInfor.setTitle(R.string.titleDialogStaff);
+                TextView textSomeField = null;
+                mySetText(dialogStaffInfor, R.id.textStaffName, textSomeField, staffList.get(position).getName());
+                mySetText(dialogStaffInfor, R.id.textPlaceOfBirth, textSomeField, staffList.get(position).getPlaceOfBirth());
+                mySetText(dialogStaffInfor, R.id.textDateOfBirth, textSomeField, staffList.get(position).getDateOfBirth());
+                mySetText(dialogStaffInfor, R.id.textPhoneNumber, textSomeField, staffList.get(position).getPhoneNumber());
+                mySetText(dialogStaffInfor, R.id.textDepartment, textSomeField, nameDepartment);
+                mySetText(dialogStaffInfor, R.id.textStatus, textSomeField, fromValue(staffList.get(position).getStatusId()).getText());
+                mySetText(dialogStaffInfor, R.id.textPosition, textSomeField, fromPositionValue(staffList.get(position).getPositionId()).getText());
+                dialogStaffInfor.show();
+            }
+        });
+
+        listStaff.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                replace(getFragmentManager(), R.id.flContent,
+                        EditStaffFragment.newInstance(staffList.get(position).getStaffId()));
+                return false;
             }
         });
 
@@ -135,12 +145,12 @@ public class DepartmentFragment extends Fragment {
             StaffDao staffDao = new StaffDao(getContext());
             pageIndex++;
             try {
-                if(staffList == null ) {
+                if (staffList == null) {
                     staffList = staffDao.getStaffById(Integer.valueOf(value), pageSize, pageIndex);
                     return null;
                 }
                 List<Staff> tmp = staffDao.getStaffById(Integer.valueOf(value), pageSize, pageIndex);
-                if(tmp.size() == 0)
+                if (tmp.size() == 0)
                     isFinished = true;
                 staffList.addAll(tmp);
             } catch (SQLException e) {
@@ -160,5 +170,11 @@ public class DepartmentFragment extends Fragment {
             mProgressDialog.dismiss();
             super.onPostExecute(result);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(nameDepartment);
     }
 }

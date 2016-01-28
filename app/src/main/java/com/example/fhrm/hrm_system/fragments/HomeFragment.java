@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.example.fhrm.hrm_system.R;
 import com.example.fhrm.hrm_system.adapter.ArrayAdapterDepartment;
+import com.example.fhrm.hrm_system.contants.FragmentControl;
 import com.example.fhrm.hrm_system.models.Department;
 import com.example.fhrm.hrm_system.models.DepartmentDao;
 
@@ -38,20 +39,26 @@ public class HomeFragment extends Fragment {
     private void initialize(View view) {
         listDepartment = (ListView) view.findViewById(R.id.lvDepartment);
         DepartmentDao departmentDao = new DepartmentDao(getContext());
-        try {
-            departmentList = departmentDao.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        departmentList = FragmentControl.getDepartmentList(departmentDao, getContext());
         arrayDepartment = new ArrayAdapterDepartment(getContext(), android.R.layout.simple_list_item_1, departmentList);
         listDepartment.setAdapter(arrayDepartment);
         listDepartment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            replace(getFragmentManager(), R.id.flContent,
-                    DepartmentFragment.newInstance(departmentList.get(position).getDepartmentId(),
-                                                   departmentList.get(position).getNameDepartment()));
+                replace(getFragmentManager(), R.id.flContent,
+                        DepartmentFragment.newInstance(departmentList.get(position).getDepartmentId(),
+                                departmentList.get(position).getNameDepartment()));
             }
         });
+    }
+    public static HomeFragment newInstance() {
+        HomeFragment fragment = new HomeFragment();
+        return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.app_name));
     }
 }
