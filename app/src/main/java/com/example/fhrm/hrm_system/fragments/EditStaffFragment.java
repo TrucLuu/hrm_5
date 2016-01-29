@@ -4,8 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,16 +27,17 @@ import com.example.fhrm.hrm_system.models.StaffDao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
 
 /**
- * Created by luuhoangtruc on 21/01/2016.
+ * Created by luuhoangtruc on 29/01/2016.
  */
-public class AddNewStaffFragment extends Fragment implements View.OnClickListener {
-    private Staff staff;
+public class EditStaffFragment extends Fragment implements View.OnClickListener {
+    private int valueIdStaff;
+
+    private Staff staffObject;
 
     private EditText inputStaffName, inputPlaceOfBirth, inputPhoneNumber;
     private Spinner spinnerDepartment;
@@ -48,6 +49,7 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
     private TextView textDate;
     private List<Department> departmentList;
 
+
     static final int DATE_DIALOG_ID = 999;
     private DatePicker datePicker;
     private int year;
@@ -58,6 +60,7 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
     public int departmentSave;
     public int positionSave;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_new_staff, container, false);
@@ -66,42 +69,39 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
     }
 
     private void initialize(View v) {
-        final Calendar c = Calendar.getInstance();
-        year = c.get(Calendar.YEAR);
-        month = c.get(Calendar.MONTH);
-        day = c.get(Calendar.DAY_OF_MONTH);
-
+        Bundle bundle = this.getArguments();
+        valueIdStaff = bundle.getInt("idStaff");
         DepartmentDao departmentDao = new DepartmentDao(getContext());
-        try {
-            departmentList = departmentDao.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        StaffDao staffDao = new StaffDao(getContext());
+        departmentList = FragmentControl.getDepartmentList(departmentDao, getContext());
+        staffObject = FragmentControl.getStaffListbyId(staffDao, getContext(), valueIdStaff);
+
         List<String> arrayList = new ArrayList<String>();
         for (int i = 0; i < departmentList.size(); i++) {
             arrayList.add(departmentList.get(i).getNameDepartment());
         }
-        inputStaffName = (EditText) v.findViewById(R.id.inputStaffName);
-        inputPlaceOfBirth = (EditText) v.findViewById(R.id.inputPlaceOfBirth);
-        textDate = (TextView) v.findViewById(R.id.inputDateOfBirth);
-        textDate.setText(new StringBuilder()
-                .append(month + 1).append("-").append(day).append("-")
-                .append(year).append(" "));
 
+        inputStaffName = (EditText) v.findViewById(R.id.inputStaffName);
+        inputStaffName.setText(staffObject.getName());
+        inputPlaceOfBirth = (EditText) v.findViewById(R.id.inputPlaceOfBirth);
+        inputPlaceOfBirth.setText(staffObject.getPlaceOfBirth());
+        textDate = (TextView) v.findViewById(R.id.inputDateOfBirth);
+        textDate.setText(staffObject.getDateOfBirth());
         textDate.setOnClickListener(this);
         inputPhoneNumber = (EditText) v.findViewById(R.id.inputPhoneNumber);
+        inputPhoneNumber.setText(staffObject.getPhoneNumber());
         inputPhoneNumber.setOnClickListener(this);
+
         /*Spinner Department*/
         spinnerDepartment = (Spinner) v.findViewById(R.id.spinnerDepartmentName);
         ArrayAdapter<String> adapterDepartment = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, arrayList);
-        adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    android.R.layout.simple_spinner_item, arrayList);
+            adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDepartment.setAdapter(adapterDepartment);
         spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 departmentSave = pos + 1;
-                Log.i("DEPARTMENT", "onItemSelected: =========>" + departmentSave);
             }
 
             @Override
@@ -111,14 +111,12 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         });
         /*Spinner Status*/
         spinnerStatus = (Spinner) v.findViewById(R.id.spinnerStatus);
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, FragmentControl.status);
-        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        FragmentControl.spinnerInterface(getContext(), spinnerStatus, FragmentControl.status);
+        spinnerStatus.setSelection(staffObject.getStatusId());
         spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int positionStatus, long id) {
                 statusSave = positionStatus + 1;
-                Log.i("STATUS", "onItemSelected: =========>" + statusSave);
             }
 
             @Override
@@ -126,18 +124,14 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
 
             }
         });
-        spinnerStatus.setAdapter(adapterStatus);
         /*Spinner Position*/
         spinnerPosition = (Spinner) v.findViewById(R.id.spinnerPosition);
-        ArrayAdapter<String> adapterPosition = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, FragmentControl.position);
-        adapterPosition.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPosition.setAdapter(adapterPosition);
+        FragmentControl.spinnerInterface(getContext(), spinnerPosition, FragmentControl.position);
+        spinnerPosition.setSelection(staffObject.getPositionId());
         spinnerPosition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int positionPost, long id) {
                 positionSave = positionPost + 1;
-                Log.i("POSITION", "onItemSelected: =========>" + positionSave);
             }
 
             @Override
@@ -149,14 +143,18 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         buttonDatePicker.setBackgroundResource(R.mipmap.calendar);
         buttonDatePicker.setOnClickListener(this);
         buttonSave = (Button) v.findViewById(R.id.btnSave);
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveData();
-            }
-        });
+        buttonSave.setText(R.string.done);
+        buttonSave.setOnClickListener(this);
         buttonBack = (Button) v.findViewById(R.id.btnBack);
         buttonBack.setOnClickListener(this);
+    }
+
+    public static EditStaffFragment newInstance(int idStaff) {
+        EditStaffFragment fragment = new EditStaffFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("idStaff", idStaff);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     protected Dialog onCreateDialog(int id) {
@@ -185,6 +183,9 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btnSave:
+                saveData();
+                break;
             case R.id.inputDateOfBirth:
                 onCreateDialog(DATE_DIALOG_ID).show();
                 break;
@@ -208,13 +209,15 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         dialog.show();
         dialog.setTitle(R.string.titleDialog);
         dialog.show();
-        staff = new Staff(getId(), staffName, staffPlaceOfBirth, staffBirthday, staffPhone, departmentSave,
+        Staff staff = new Staff(valueIdStaff, staffName, staffPlaceOfBirth, staffBirthday, staffPhone, departmentSave,
                 statusSave, positionSave);
         StaffDao staffDao = new StaffDao(getContext());
         try {
-            if (staffDao.insert(staff) > -1) {
-                staffDao.insert(staff);
+            if (staffDao.updateStaff(staff) > -1) {
+                staffDao.updateStaff(staff);
                 Toast.makeText(getContext(), getString(R.string.saveSuccess), Toast.LENGTH_SHORT).show();
+                replace(getFragmentManager(), R.id.flContent,
+                        HomeFragment.newInstance());
                 dialog.dismiss();
             }
         } catch (SQLException e) {

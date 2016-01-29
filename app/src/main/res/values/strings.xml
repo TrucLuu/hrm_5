@@ -22,6 +22,13 @@
     <string name="saveSuccess">Save Data to Database Success</string>
     <string name="saveUnSuccess">Do not save</string>
 
+    <string name="quit">WARNING</string>
+    <string name="reallyquit">ARE YOU SURE FOR ACTION?</string>
+    <string name="done">DONE</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+
     <string name="btnBack">BACK</string>
     <string name="btnSave">SAVE</string>
 
