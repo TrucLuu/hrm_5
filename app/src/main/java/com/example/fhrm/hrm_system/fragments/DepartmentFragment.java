@@ -5,29 +5,25 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.fhrm.hrm_system.R;
-import com.example.fhrm.hrm_system.adapter.ArrayAdapterDepartment;
 import com.example.fhrm.hrm_system.adapter.ArrayAdapterStaff;
-import com.example.fhrm.hrm_system.contants.EnumClass;
-import com.example.fhrm.hrm_system.contants.FragmentControl;
-import com.example.fhrm.hrm_system.models.Department;
-import com.example.fhrm.hrm_system.models.DepartmentDao;
 import com.example.fhrm.hrm_system.models.Staff;
 import com.example.fhrm.hrm_system.models.StaffDao;
 
-import java.sql.Array;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.fhrm.hrm_system.contants.EnumClass.PositionCode.fromPositionValue;
 import static com.example.fhrm.hrm_system.contants.EnumClass.StatusCode.fromValue;
@@ -43,11 +39,15 @@ public class DepartmentFragment extends Fragment {
     private String nameDepartment;
     public ListView listStaff;
     private List<Staff> staffList;
+    private List<Staff> staffArrayList;
     private ArrayAdapterStaff arrayStaff;
     private int pageIndex = 0;
     private int pageSize = 30;
     private ProgressDialog mProgressDialog;
     private boolean isFinished;
+    private EditText editTextSearch;
+    private TextView textSomeField;
+    private Dialog dialogStaffInfor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,29 +61,43 @@ public class DepartmentFragment extends Fragment {
         value = bundle.getString("id_department");
         nameDepartment = bundle.getString("name_department");
         listStaff = (ListView) v.findViewById(R.id.lvStaff);
+        editTextSearch = (EditText) v.findViewById(R.id.searchView);
         StaffDao staffDao = new StaffDao(getContext());
         try {
             staffList = staffDao.getStaffById(Integer.valueOf(value), pageSize, pageIndex);
+            staffArrayList = staffDao.getAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String textSearch = editTextSearch.getText().toString().toLowerCase(Locale.getDefault());
+                filter(textSearch);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         arrayStaff = new ArrayAdapterStaff(getContext(), android.R.layout.simple_list_item_1, staffList);
         listStaff.setAdapter(arrayStaff);
         getActivity().setTitle(nameDepartment);
         listStaff.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Dialog dialogStaffInfor = new Dialog(view.getContext());
+                dialogStaffInfor = new Dialog(view.getContext());
                 dialogStaffInfor.setContentView(R.layout.fragment_information_staff);
                 dialogStaffInfor.setTitle(R.string.titleDialogStaff);
-                TextView textSomeField = null;
-                mySetText(dialogStaffInfor, R.id.textStaffName, textSomeField, staffList.get(position).getName());
-                mySetText(dialogStaffInfor, R.id.textPlaceOfBirth, textSomeField, staffList.get(position).getPlaceOfBirth());
-                mySetText(dialogStaffInfor, R.id.textDateOfBirth, textSomeField, staffList.get(position).getDateOfBirth());
-                mySetText(dialogStaffInfor, R.id.textPhoneNumber, textSomeField, staffList.get(position).getPhoneNumber());
-                mySetText(dialogStaffInfor, R.id.textDepartment, textSomeField, nameDepartment);
-                mySetText(dialogStaffInfor, R.id.textStatus, textSomeField, fromValue(staffList.get(position).getStatusId()).getText());
-                mySetText(dialogStaffInfor, R.id.textPosition, textSomeField, fromPositionValue(staffList.get(position).getPositionId()).getText());
+                textSomeField = null;
+                Staff mPosition = staffList.get(position);
+                setData(mPosition);
                 dialogStaffInfor.show();
             }
         });
@@ -115,7 +129,6 @@ public class DepartmentFragment extends Fragment {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
-
             }
         });
     }
@@ -130,7 +143,6 @@ public class DepartmentFragment extends Fragment {
     }
 
     class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected void onPreExecute() {
             mProgressDialog = new ProgressDialog(getContext());
@@ -170,6 +182,34 @@ public class DepartmentFragment extends Fragment {
             mProgressDialog.dismiss();
             super.onPostExecute(result);
         }
+    }
+
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        if (charText.length() == 0) {
+            staffList.clear();
+            staffList.addAll(staffArrayList);
+            arrayStaff.notifyDataSetChanged();
+        } else {
+            staffList.clear();
+            Locale localeDefault = Locale.getDefault();
+            for (Staff wp : staffArrayList) {
+                if (wp.getName().toLowerCase(localeDefault).contains(charText)) {
+                    staffList.add(wp);
+                }
+            }
+            arrayStaff.notifyDataSetInvalidated();
+        }
+    }
+
+    public void setData(Staff staff){
+        mySetText(dialogStaffInfor, R.id.textStaffName, textSomeField, staff.getName());
+        mySetText(dialogStaffInfor, R.id.textPlaceOfBirth, textSomeField, staff.getPlaceOfBirth());
+        mySetText(dialogStaffInfor, R.id.textDateOfBirth, textSomeField, staff.getDateOfBirth());
+        mySetText(dialogStaffInfor, R.id.textPhoneNumber, textSomeField,staff.getPhoneNumber());
+        mySetText(dialogStaffInfor, R.id.textDepartment, textSomeField, nameDepartment);
+        mySetText(dialogStaffInfor, R.id.textStatus, textSomeField, fromValue(staff.getStatusId()).getText());
+        mySetText(dialogStaffInfor, R.id.textPosition, textSomeField, fromPositionValue(staff.getPositionId()).getText());
     }
 
     @Override
