@@ -15,6 +15,7 @@
     <string name="dateOfBirth">Date of Birth</string>
     <string name="phoneNumber">Phone Number</string>
     <string name="departmentName">Department</string>
+    <string name="searchbyname">Search Name</string>
     <string name="status">Status</string>
     <string name="position">Position</string>
 

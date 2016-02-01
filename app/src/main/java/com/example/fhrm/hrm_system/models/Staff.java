@@ -16,6 +16,10 @@ public class Staff {
     private int statusId;
     private int positionId;
 
+    public Staff(String name){
+        this.name = name;
+    }
+
     public Staff(Cursor cursor) {
         this.staffId = cursor.getInt(cursor.getColumnIndexOrThrow("staffId"));
         this.name = cursor.getString(cursor.getColumnIndexOrThrow("name"));

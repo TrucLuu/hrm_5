@@ -96,9 +96,9 @@ public class StaffDao extends ModelDao<Staff> {
     /**
      * Get all contact
      */
-    public List<Staff> getAll() throws SQLException {
+    public ArrayList<Staff> getAll() throws SQLException {
         open();
-        List<Staff> staffList = new ArrayList<Staff>();
+        ArrayList<Staff> staffList = new ArrayList<Staff>();
         String selectQuerry = "SELECT * FROM " + DbConstants.TABLE_STAFF;
         Cursor cursor = database.rawQuery(selectQuerry, null);
         if (cursor.moveToFirst()) {
