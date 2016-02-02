@@ -4,8 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,29 +28,25 @@ import java.util.List;
  * Created by luuhoangtruc on 25/01/2016.
  */
 public class FragmentControl {
-    public static void replace (FragmentManager fragmentManager, int layout_id, Fragment fragment) {
+    public static void replace(FragmentManager fragmentManager, int layout_id, Fragment fragment) {
         fragmentManager.beginTransaction()
                 .replace(layout_id, fragment)
                 .commit();
     }
 
-    public static void mySetText (Dialog dialog, int idInput, TextView textInput, String text){
-        textInput = (TextView)dialog.findViewById(idInput);
+    public static void mySetText(Dialog dialog, int idInput, TextView textInput, String text) {
+        textInput = (TextView) dialog.findViewById(idInput);
         textInput.setText(text);
     }
 
-    public static final String [] status ={"Trainee","Intern Ship","Official Staff"};
-    public static final String [] position ={"Manager", "Group Leader","Leader","Quality Assurance","Staff"
-            ,"Tester","Comtor","Bridge System Engineer"};
-
-    public static void spinnerInterface (Context context, Spinner spiner, String[] list){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_item, list);
+    public static void spinnerInterface(Context context, Spinner spiner, int array) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter
+                .createFromResource(context, array,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
     }
 
-    public static final List<Department> getDepartmentList(DepartmentDao departmentDao, Context context){
+    public static List<Department> getDepartmentList(DepartmentDao departmentDao, Context context) {
         List<Department> departmentList = null;
         departmentDao = new DepartmentDao(context);
         try {
@@ -57,9 +57,9 @@ public class FragmentControl {
         return departmentList;
     }
 
-    public static final Staff getStaffListbyId(StaffDao staffDao, Context context, int id){
+    public static Staff getStaffListbyId(Context context, int id) {
         Staff staffList = null;
-        staffDao = new StaffDao(context);
+        StaffDao staffDao = new StaffDao(context);
         try {
             staffList = staffDao.getStaff(id);
         } catch (SQLException e) {
@@ -67,4 +67,26 @@ public class FragmentControl {
         }
         return staffList;
     }
+
+    public static boolean validates(String strError, EditText... editTexts) {
+        if (editTexts == null || editTexts.length == 0) {
+            return false;
+        }
+        for (EditText edt : editTexts) {
+            if (!TextUtils.isEmpty(edt.getText().toString())) {
+                continue;
+            }
+            edt.setError(strError);
+            return false;
+        }
+        return true;
+    }
+
+    public static void clearFocus(Context context, EditText... editText) {
+        for (EditText edt : editText) {
+            InputMethodManager in = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(edt.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
 }

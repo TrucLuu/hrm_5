@@ -31,7 +31,8 @@ public class Staff {
         this.positionId = cursor.getInt(cursor.getColumnIndexOrThrow("positionId"));
     }
 
-    public Staff(int staffId, String name, String birth_place, String date_of_birth, String phone_number, int dept_id, int status_id, int position_id) {
+    public Staff(int staffId, String name, String birth_place, String date_of_birth, String phone_number,
+                 int dept_id, int status_id, int position_id) {
         this.staffId = staffId;
         this.name = name;
         this.dateOfBirth = date_of_birth;

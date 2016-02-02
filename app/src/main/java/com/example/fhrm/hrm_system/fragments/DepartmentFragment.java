@@ -2,6 +2,7 @@ package com.example.fhrm.hrm_system.fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -53,7 +56,15 @@ public class DepartmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_department, container, false);
         initialize(view);
+        setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     private void initialize(View v) {
@@ -91,12 +102,12 @@ public class DepartmentFragment extends Fragment {
         getActivity().setTitle(nameDepartment);
         listStaff.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 dialogStaffInfor = new Dialog(view.getContext());
                 dialogStaffInfor.setContentView(R.layout.fragment_information_staff);
                 dialogStaffInfor.setTitle(R.string.titleDialogStaff);
                 textSomeField = null;
-                Staff mPosition = staffList.get(position);
+                Staff mPosition = staffList.get(pos);
                 setData(mPosition);
                 dialogStaffInfor.show();
             }
@@ -176,8 +187,9 @@ public class DepartmentFragment extends Fragment {
             if (arrayStaff == null) {
                 arrayStaff = new ArrayAdapterStaff(getContext(), android.R.layout.simple_list_item_1, staffList);
                 listStaff.setAdapter(arrayStaff);
-            } else {
                 arrayStaff.notifyDataSetChanged();
+            } else {
+                arrayStaff.notifyDataSetInvalidated();
             }
             mProgressDialog.dismiss();
             super.onPostExecute(result);

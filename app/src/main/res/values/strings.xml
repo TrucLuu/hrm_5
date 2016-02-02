@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HRM SYSTEM</string>
+    <string name="app_name">Hrm System</string>
     <string name="action_settings">Settings</string>
     <string name="nav_item_home">Home</string>
     <string name="nav_item_add_staff">Add More Staff</string>
@@ -18,10 +18,14 @@
     <string name="searchbyname">Search Name</string>
     <string name="status">Status</string>
     <string name="position">Position</string>
+    <string name="mHasError">Can not be blank this field</string>
 
 
     <string name="saveSuccess">Save Data to Database Success</string>
     <string name="saveUnSuccess">Do not save</string>
+    <string name="design">Design by</string>
+    <string name="name">Luu Hoang Truc</string>
+    <string name="nameCompany">Framgia Vietnam</string>
 
     <string name="quit">WARNING</string>
     <string name="reallyquit">ARE YOU SURE FOR ACTION?</string>
@@ -32,5 +36,22 @@
 
     <string name="btnBack">BACK</string>
     <string name="btnSave">SAVE</string>
+
+    <string-array name="status">
+        <item>Trainee</item>
+        <item>Intern Ship</item>
+        <item>Official Staff</item>
+    </string-array>
+
+    <string-array name="position">
+        <item>Manager</item>
+        <item>Group Leader</item>
+        <item>Leader</item>
+        <item>Quality Assurance</item>
+        <item>Staff</item>
+        <item>Tester</item>
+        <item>Comtor</item>
+        <item>Bridge System Engineer</item>
+    </string-array>
 
 </resources>

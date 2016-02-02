@@ -32,6 +32,7 @@ public class StaffDao extends ModelDao<Staff> {
         values.put(DbConstants.STAFF_COLUMN_DEPARTMENT_ID, staff.getDepartmentId());
         values.put(DbConstants.STAFF_COLUMN_STATUS_ID, staff.getStatusId());
         values.put(DbConstants.STAFF_COLUMN_POSITION_ID, staff.getPositionId());
+        values.put(DbConstants.STAFF_COLUMN_TIME_STAMP, String.valueOf(System.currentTimeMillis()));
         rowIdInserted = database.insert(DbConstants.TABLE_STAFF, null, values);
         close();
         return rowIdInserted;
@@ -44,13 +45,14 @@ public class StaffDao extends ModelDao<Staff> {
         open();
         int rowInsert = 0;
         ContentValues values;
-        values= new ContentValues();
+        values = new ContentValues();
         values.put(DbConstants.STAFF_COLUMN_NAME, staff.getName());
         values.put(DbConstants.STAFF_COLUMN_POB, staff.getPlaceOfBirth());
         values.put(DbConstants.STAFF_COLUMN_DOB, staff.getDateOfBirth());
         values.put(DbConstants.STAFF_COLUMN_PHONE_NUM, staff.getPhoneNumber());
         values.put(DbConstants.STAFF_COLUMN_STATUS_ID, staff.getStatusId());
         values.put(DbConstants.STAFF_COLUMN_POSITION_ID, staff.getPositionId());
+        values.put(DbConstants.STAFF_COLUMN_TIME_STAMP, String.valueOf(System.currentTimeMillis()));
         values.put(DbConstants.STAFF_COLUMN_DEPARTMENT_ID, staff.getDepartmentId());
         String[] whereArgs = {String.valueOf(staff.getStaffId())};
         rowInsert = database.update(DbConstants.TABLE_STAFF, values, DbConstants.STAFF_COLUMN_ID + " = ?", whereArgs);
@@ -87,7 +89,6 @@ public class StaffDao extends ModelDao<Staff> {
             int statusId = cursor.getInt(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_STATUS_ID));
             int positionId = cursor.getInt(cursor.getColumnIndex(DbConstants.STAFF_COLUMN_POSITION_ID));
             staff = new Staff(id, name, placeOfBirth, dateOfBirth, phone, departmentId, statusId, positionId);
-            staff.setStatusId(id);
         }
         close();
         return staff;
@@ -99,19 +100,12 @@ public class StaffDao extends ModelDao<Staff> {
     public ArrayList<Staff> getAll() throws SQLException {
         open();
         ArrayList<Staff> staffList = new ArrayList<Staff>();
-        String selectQuerry = "SELECT * FROM " + DbConstants.TABLE_STAFF;
+        String selectQuerry = "SELECT * FROM " + DbConstants.TABLE_STAFF
+                + " ORDER BY " + DbConstants.STAFF_COLUMN_TIME_STAMP + " DESC";
         Cursor cursor = database.rawQuery(selectQuerry, null);
         if (cursor.moveToFirst()) {
             do {
                 Staff staff = new Staff(cursor);
-                staff.setStaffId(Integer.parseInt(cursor.getString(0)));
-                staff.setName(cursor.getString(1));
-                staff.setDateOfBirth(cursor.getString(2));
-                staff.setPlaceOfBirth(cursor.getString(3));
-                staff.setPhoneNumber(cursor.getString(4));
-                staff.setDepartmentId(Integer.parseInt(cursor.getString(5)));
-                staff.setStatusId(Integer.parseInt(cursor.getString(6)));
-                staff.setPositionId(Integer.parseInt(cursor.getString(7)));
                 staffList.add(staff);
             } while (cursor.moveToNext());
         }
@@ -138,7 +132,7 @@ public class StaffDao extends ModelDao<Staff> {
         String selectQuerry = "SELECT * FROM " + DbConstants.TABLE_STAFF
                 + " WHERE " + DbConstants.TABLE_STAFF + "."
                 + DbConstants.STAFF_COLUMN_DEPARTMENT_ID + "=" +
-                index + " LIMIT " + pageSize + " OFFSET " + pageIndex * pageSize;
+                index + " ORDER BY " + DbConstants.STAFF_COLUMN_TIME_STAMP + " DESC" + " LIMIT " + pageSize + " OFFSET " + pageIndex * pageSize;
         Cursor cursor = database.rawQuery(selectQuerry, null);
         if (cursor.moveToFirst()) {
             do {

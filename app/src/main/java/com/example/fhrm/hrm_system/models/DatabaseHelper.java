@@ -39,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + DbConstants.STAFF_COLUMN_PHONE_NUM + " TEXT , "
             + DbConstants.STAFF_COLUMN_STATUS_ID + " INTEGER , "
             + DbConstants.STAFF_COLUMN_POSITION_ID + " INTEGER , "
+            + DbConstants.STAFF_COLUMN_TIME_STAMP + " TEXT , "
             + DbConstants.STAFF_COLUMN_DEPARTMENT_ID + " INTEGER , "
             + "FOREIGN KEY (" + DbConstants.STAFF_COLUMN_DEPARTMENT_ID + ") REFERENCES "
             + DbConstants.TABLE_DEPARTMENT + "(" + DbConstants.DEPARTMENT_COLUMN_ID + "))";

@@ -6,190 +6,216 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_margin="@dimen/line_padding"
+        android:layout_height="0dp"
+        android:layout_weight="5"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/medium_padding"
-            android:text="@string/staffName" />
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="horizontal">
 
-        <EditText
-            android:id="@+id/inputStaffName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:background="@drawable/customborder"
-            android:padding="@dimen/line_padding" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/fab_margin"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_margin="@dimen/line_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/medium_padding"
+                        android:text="@string/staffName" />
+
+                    <EditText
+                        android:id="@+id/inputStaffName"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@drawable/customborder"
+                        android:imeOptions="actionDone"
+                        android:padding="@dimen/line_padding" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_margin="@dimen/line_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/line_padding"
+                        android:text="@string/placeOfBirth" />
+
+                    <EditText
+                        android:id="@+id/inputPlaceOfBirth"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@drawable/customborder"
+                        android:imeOptions="actionDone"
+                        android:padding="@dimen/line_padding" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_margin="@dimen/line_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/medium_padding"
+                        android:text="@string/dateOfBirth" />
+
+                    <TextView
+                        android:id="@+id/inputDateOfBirth"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/line_padding" />
+
+                    <Button
+                        android:id="@+id/buttonDatePicker"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"></Button>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_margin="@dimen/line_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/line_padding"
+                        android:text="@string/phoneNumber" />
+
+                    <EditText
+                        android:id="@+id/inputPhoneNumber"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@drawable/customborder"
+                        android:imeOptions="actionDone"
+                        android:inputType="phone"
+                        android:padding="@dimen/line_padding" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_margin="@dimen/line_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/line_padding"
+                        android:text="@string/departmentName" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDepartmentName"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@drawable/customborder"
+                        android:padding="@dimen/line_padding" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_margin="@dimen/line_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/line_padding"
+                        android:text="@string/status" />
+
+                    <Spinner
+                        android:id="@+id/spinnerStatus"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@drawable/customborder"
+                        android:padding="@dimen/line_padding" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_margin="@dimen/line_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:background="@drawable/customborder"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/line_padding"
+                        android:text="@string/position" />
+
+                    <Spinner
+                        android:id="@+id/spinnerPosition"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@drawable/customborder"
+                        android:padding="@dimen/line_padding" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
+        android:layout_height="0dp"
         android:layout_margin="@dimen/line_padding"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/line_padding"
-            android:text="@string/placeOfBirth" />
-
-        <EditText
-            android:id="@+id/inputPlaceOfBirth"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:background="@drawable/customborder"
-            android:padding="@dimen/line_padding" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_margin="@dimen/line_padding"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/medium_padding"
-            android:text="@string/dateOfBirth" />
-
-        <TextView
-            android:id="@+id/inputDateOfBirth"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/line_padding" />
-
-        <Button
-            android:id="@+id/buttonDatePicker"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_margin="@dimen/line_padding"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/line_padding"
-            android:text="@string/phoneNumber" />
-
-        <EditText
-            android:id="@+id/inputPhoneNumber"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:background="@drawable/customborder"
-            android:inputType="phone"
-            android:padding="@dimen/line_padding" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_margin="@dimen/line_padding"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/line_padding"
-            android:text="@string/departmentName" />
-
-        <Spinner
-            android:id="@+id/spinnerDepartmentName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:background="@drawable/customborder"
-            android:padding="@dimen/line_padding" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_margin="@dimen/line_padding"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/line_padding"
-            android:text="@string/status" />
-
-        <Spinner
-            android:id="@+id/spinnerStatus"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:background="@drawable/customborder"
-            android:padding="@dimen/line_padding" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_margin="@dimen/line_padding"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/customborder"
-            android:gravity="center_vertical"
-            android:padding="@dimen/line_padding"
-            android:text="@string/position" />
-
-        <Spinner
-            android:id="@+id/spinnerPosition"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:background="@drawable/customborder"
-            android:padding="@dimen/line_padding" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_margin="@dimen/line_padding"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnSave"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp55"
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
             android:padding="@dimen/line_padding"
@@ -198,7 +224,7 @@
         <Button
             android:id="@+id/btnBack"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp55"
             android:layout_weight="1"
             android:padding="@dimen/line_padding"
             android:text="@string/btnBack" />

@@ -3,12 +3,14 @@ package com.example.fhrm.hrm_system.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,6 +31,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocus;
 import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
 
 /**
@@ -49,7 +52,6 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
     private TextView textDate;
     private List<Department> departmentList;
 
-
     static final int DATE_DIALOG_ID = 999;
     private DatePicker datePicker;
     private int year;
@@ -65,16 +67,23 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_new_staff, container, false);
         initialize(view);
+        setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     private void initialize(View v) {
         Bundle bundle = this.getArguments();
         valueIdStaff = bundle.getInt("idStaff");
         DepartmentDao departmentDao = new DepartmentDao(getContext());
-        StaffDao staffDao = new StaffDao(getContext());
         departmentList = FragmentControl.getDepartmentList(departmentDao, getContext());
-        staffObject = FragmentControl.getStaffListbyId(staffDao, getContext(), valueIdStaff);
+        staffObject = FragmentControl.getStaffListbyId(getContext(), valueIdStaff);
 
         List<String> arrayList = new ArrayList<String>();
         for (int i = 0; i < departmentList.size(); i++) {
@@ -95,9 +104,10 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
         /*Spinner Department*/
         spinnerDepartment = (Spinner) v.findViewById(R.id.spinnerDepartmentName);
         ArrayAdapter<String> adapterDepartment = new ArrayAdapter<String>(getContext(),
-                    android.R.layout.simple_spinner_item, arrayList);
-            adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                android.R.layout.simple_spinner_item, arrayList);
+        adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDepartment.setAdapter(adapterDepartment);
+        spinnerDepartment.setSelection(staffObject.getDepartmentId() - 1);
         spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -111,8 +121,8 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
         });
         /*Spinner Status*/
         spinnerStatus = (Spinner) v.findViewById(R.id.spinnerStatus);
-        FragmentControl.spinnerInterface(getContext(), spinnerStatus, FragmentControl.status);
-        spinnerStatus.setSelection(staffObject.getStatusId());
+        FragmentControl.spinnerInterface(getContext(), spinnerStatus, R.array.status);
+        spinnerStatus.setSelection(staffObject.getStatusId() - 1);
         spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int positionStatus, long id) {
@@ -126,8 +136,8 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
         });
         /*Spinner Position*/
         spinnerPosition = (Spinner) v.findViewById(R.id.spinnerPosition);
-        FragmentControl.spinnerInterface(getContext(), spinnerPosition, FragmentControl.position);
-        spinnerPosition.setSelection(staffObject.getPositionId());
+        FragmentControl.spinnerInterface(getContext(), spinnerPosition, R.array.position);
+        spinnerPosition.setSelection(staffObject.getPositionId() - 1);
         spinnerPosition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int positionPost, long id) {
@@ -184,6 +194,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnSave:
+                clearFocus(getContext(), inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
                 saveData();
                 break;
             case R.id.inputDateOfBirth:
@@ -196,6 +207,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
             case R.id.btnBack:
                 replace(getFragmentManager(), R.id.flContent,
                         HomeFragment.newInstance());
+                clearFocus(getContext(), inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
                 break;
         }
     }
@@ -208,7 +220,6 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
         ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.show();
         dialog.setTitle(R.string.titleDialog);
-        dialog.show();
         Staff staff = new Staff(valueIdStaff, staffName, staffPlaceOfBirth, staffBirthday, staffPhone, departmentSave,
                 statusSave, positionSave);
         StaffDao staffDao = new StaffDao(getContext());

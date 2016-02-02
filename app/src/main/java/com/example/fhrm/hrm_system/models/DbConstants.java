@@ -32,6 +32,7 @@ public class DbConstants {
     public static final String STAFF_COLUMN_DEPARTMENT_ID = DEPARTMENT_COLUMN_ID;
     public static final String STAFF_COLUMN_STATUS_ID = "statusId";
     public static final String STAFF_COLUMN_POSITION_ID = "positionId";
+    public static final String STAFF_COLUMN_TIME_STAMP = "timeStamp";
 
     public static String getStringbyFile(Context context, String fileDir) {
         String str = null;

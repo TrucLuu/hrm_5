@@ -3,12 +3,15 @@ package com.example.fhrm.hrm_system.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocus;
 import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
 
 /**
@@ -62,7 +66,15 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_new_staff, container, false);
         initialize(view);
+        setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     private void initialize(View v) {
@@ -101,7 +113,6 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 departmentSave = pos + 1;
-                Log.i("DEPARTMENT", "onItemSelected: =========>" + departmentSave);
             }
 
             @Override
@@ -111,14 +122,11 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         });
         /*Spinner Status*/
         spinnerStatus = (Spinner) v.findViewById(R.id.spinnerStatus);
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, FragmentControl.status);
-        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        FragmentControl.spinnerInterface(getContext(), spinnerStatus, R.array.status);
         spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int positionStatus, long id) {
                 statusSave = positionStatus + 1;
-                Log.i("STATUS", "onItemSelected: =========>" + statusSave);
             }
 
             @Override
@@ -126,13 +134,9 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
 
             }
         });
-        spinnerStatus.setAdapter(adapterStatus);
         /*Spinner Position*/
         spinnerPosition = (Spinner) v.findViewById(R.id.spinnerPosition);
-        ArrayAdapter<String> adapterPosition = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, FragmentControl.position);
-        adapterPosition.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPosition.setAdapter(adapterPosition);
+        FragmentControl.spinnerInterface(getContext(), spinnerPosition, R.array.position);
         spinnerPosition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int positionPost, long id) {
@@ -152,6 +156,10 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!validate()) {
+                    return;
+                }
+                clearFocus(getContext(), inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
                 saveData();
             }
         });
@@ -193,6 +201,7 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.btnBack:
+                clearFocus(getContext(), inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
                 replace(getFragmentManager(), R.id.flContent,
                         HomeFragment.newInstance());
                 break;
@@ -204,8 +213,8 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         String staffBirthday = textDate.getText().toString();
         String staffPlaceOfBirth = inputPlaceOfBirth.getText().toString();
         String staffPhone = inputPhoneNumber.getText().toString();
+        validate();
         ProgressDialog dialog = new ProgressDialog(getContext());
-        dialog.show();
         dialog.setTitle(R.string.titleDialog);
         dialog.show();
         staff = new Staff(getId(), staffName, staffPlaceOfBirth, staffBirthday, staffPhone, departmentSave,
@@ -213,13 +222,23 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         StaffDao staffDao = new StaffDao(getContext());
         try {
             if (staffDao.insert(staff) > -1) {
-                staffDao.insert(staff);
                 Toast.makeText(getContext(), getString(R.string.saveSuccess), Toast.LENGTH_SHORT).show();
+                replace(getFragmentManager(), R.id.flContent, HomeFragment.newInstance());
                 dialog.dismiss();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), getString(R.string.saveUnSuccess), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public boolean validate() {
+        String strError = getString(R.string.mHasError);
+        return FragmentControl.validates(strError, inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

@@ -3,92 +3,108 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/fab_margin"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textStaffName"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp100"
-        android:textSize="@dimen/sp40"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_margin="@dimen/fab_margin"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55"
-                android:text="@string/placeOfBirth" />
 
             <TextView
+                android:id="@+id/textStaffName"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55"
-                android:text="@string/dateOfBirth" />
+                android:layout_height="@dimen/dp100"
+                android:textSize="@dimen/sp40" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55"
-                android:text="@string/phoneNumber" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55"
-                android:text="@string/departmentName" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55"
-                android:text="@string/status" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55"
-                android:text="@string/position" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55"
+                        android:text="@string/placeOfBirth" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55"
+                        android:text="@string/dateOfBirth" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55"
+                        android:text="@string/phoneNumber" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55"
+                        android:text="@string/departmentName" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55"
+                        android:text="@string/status" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55"
+                        android:text="@string/position" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textPlaceOfBirth"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55" />
+
+                    <TextView
+                        android:id="@+id/textDateOfBirth"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55" />
+
+                    <TextView
+                        android:id="@+id/textPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55" />
+
+                    <TextView
+                        android:id="@+id/textDepartment"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55" />
+
+                    <TextView
+                        android:id="@+id/textStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55" />
+
+                    <TextView
+                        android:id="@+id/textPosition"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp55" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textPlaceOfBirth"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55" />
-
-            <TextView
-                android:id="@+id/textDateOfBirth"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55" />
-
-            <TextView
-                android:id="@+id/textPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55" />
-
-            <TextView
-                android:id="@+id/textDepartment"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55" />
-
-            <TextView
-                android:id="@+id/textStatus"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55" />
-
-            <TextView
-                android:id="@+id/textPosition"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

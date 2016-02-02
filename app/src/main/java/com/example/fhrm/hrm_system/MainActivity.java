@@ -1,5 +1,6 @@
 package com.example.fhrm.hrm_system;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
+import com.example.fhrm.hrm_system.contants.FragmentControl;
 import com.example.fhrm.hrm_system.fragments.AboutFragment;
 import com.example.fhrm.hrm_system.fragments.AddNewStaffFragment;
 import com.example.fhrm.hrm_system.fragments.HomeFragment;
@@ -21,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     Fragment fragment = null;
     Class fragmentClass = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +52,16 @@ public class MainActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         setupDrawerContent(navigationView);
     }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-            new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(MenuItem menuItem) {
-                    selectDrawerItem(menuItem);
-                    return true;
-                }
-            });
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -63,14 +70,19 @@ public class MainActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.navigation_item_home:
                 fragmentClass = HomeFragment.class;
+                onResume();
                 break;
             case R.id.navigation_item_add_staff:
                 fragmentClass = AddNewStaffFragment.class;
+                onResume();
                 break;
             case R.id.navigation_item_about:
                 fragmentClass = AboutFragment.class;
+                onResume();
                 break;
             case R.id.navigation_item_exit:
+                finish();
+                System.exit(0);
                 break;
             default:
         }
@@ -112,5 +124,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        if(getWindow().getAttributes().softInputMode==WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED)
+        {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        }
+        super.onResume();
     }
 }
