@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -30,7 +29,7 @@ import java.util.Locale;
 
 import static com.example.fhrm.hrm_system.contants.EnumClass.PositionCode.fromPositionValue;
 import static com.example.fhrm.hrm_system.contants.EnumClass.StatusCode.fromValue;
-import static com.example.fhrm.hrm_system.contants.FragmentControl.mySetText;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.mySetTextDialog;
 import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
 
 /**
@@ -215,13 +214,13 @@ public class DepartmentFragment extends Fragment {
     }
 
     public void setData(Staff staff){
-        mySetText(dialogStaffInfor, R.id.textStaffName, textSomeField, staff.getName());
-        mySetText(dialogStaffInfor, R.id.textPlaceOfBirth, textSomeField, staff.getPlaceOfBirth());
-        mySetText(dialogStaffInfor, R.id.textDateOfBirth, textSomeField, staff.getDateOfBirth());
-        mySetText(dialogStaffInfor, R.id.textPhoneNumber, textSomeField,staff.getPhoneNumber());
-        mySetText(dialogStaffInfor, R.id.textDepartment, textSomeField, nameDepartment);
-        mySetText(dialogStaffInfor, R.id.textStatus, textSomeField, fromValue(staff.getStatusId()).getText());
-        mySetText(dialogStaffInfor, R.id.textPosition, textSomeField, fromPositionValue(staff.getPositionId()).getText());
+        mySetTextDialog(dialogStaffInfor, R.id.textStaffName, textSomeField, staff.getName());
+        mySetTextDialog(dialogStaffInfor, R.id.textPlaceOfBirth, textSomeField, staff.getPlaceOfBirth());
+        mySetTextDialog(dialogStaffInfor, R.id.textDateOfBirth, textSomeField, staff.getDateOfBirth());
+        mySetTextDialog(dialogStaffInfor, R.id.textPhoneNumber, textSomeField, staff.getPhoneNumber());
+        mySetTextDialog(dialogStaffInfor, R.id.textDepartment, textSomeField, nameDepartment);
+        mySetTextDialog(dialogStaffInfor, R.id.textStatus, textSomeField, fromValue(staff.getStatusId()).getText());
+        mySetTextDialog(dialogStaffInfor, R.id.textPosition, textSomeField, fromPositionValue(staff.getPositionId()).getText());
     }
 
     @Override

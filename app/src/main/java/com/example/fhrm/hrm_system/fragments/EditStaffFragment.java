@@ -32,7 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocus;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocusSwitchFragment;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.mySetTextfromEditText;
 import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.spinnerInterfaceList;
 
 /**
  * Created by luuhoangtruc on 29/01/2016.
@@ -74,8 +77,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        clearFocusSwitchFragment(getView(), getActivity());
     }
 
     private void initialize(View v) {
@@ -89,24 +91,16 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
         for (int i = 0; i < departmentList.size(); i++) {
             arrayList.add(departmentList.get(i).getNameDepartment());
         }
-
-        inputStaffName = (EditText) v.findViewById(R.id.inputStaffName);
-        inputStaffName.setText(staffObject.getName());
-        inputPlaceOfBirth = (EditText) v.findViewById(R.id.inputPlaceOfBirth);
-        inputPlaceOfBirth.setText(staffObject.getPlaceOfBirth());
+        mySetTextfromEditText(v, R.id.inputStaffName, inputStaffName, staffObject.getName());
+        mySetTextfromEditText(v, R.id.inputPlaceOfBirth, inputPlaceOfBirth, staffObject.getPlaceOfBirth());
+        mySetTextfromEditText(v, R.id.inputPhoneNumber, inputPhoneNumber, staffObject.getPhoneNumber());
         textDate = (TextView) v.findViewById(R.id.inputDateOfBirth);
         textDate.setText(staffObject.getDateOfBirth());
         textDate.setOnClickListener(this);
-        inputPhoneNumber = (EditText) v.findViewById(R.id.inputPhoneNumber);
-        inputPhoneNumber.setText(staffObject.getPhoneNumber());
-        inputPhoneNumber.setOnClickListener(this);
 
         /*Spinner Department*/
         spinnerDepartment = (Spinner) v.findViewById(R.id.spinnerDepartmentName);
-        ArrayAdapter<String> adapterDepartment = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, arrayList);
-        adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDepartment.setAdapter(adapterDepartment);
+        spinnerInterfaceList(getContext(), spinnerDepartment, arrayList);
         spinnerDepartment.setSelection(staffObject.getDepartmentId() - 1);
         spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -194,7 +188,6 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnSave:
-                clearFocus(getContext(), inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
                 saveData();
                 break;
             case R.id.inputDateOfBirth:
@@ -203,11 +196,9 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
             case R.id.buttonDatePicker:
                 onCreateDialog(DATE_DIALOG_ID).show();
                 break;
-
             case R.id.btnBack:
                 replace(getFragmentManager(), R.id.flContent,
                         HomeFragment.newInstance());
-                clearFocus(getContext(), inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
                 break;
         }
     }

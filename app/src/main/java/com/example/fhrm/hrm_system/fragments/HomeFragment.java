@@ -20,6 +20,7 @@ import com.example.fhrm.hrm_system.models.DepartmentDao;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocusSwitchFragment;
 import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
 
 
@@ -41,8 +42,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        clearFocusSwitchFragment(getView(), getActivity());
     }
 
     private void initialize(View view) {

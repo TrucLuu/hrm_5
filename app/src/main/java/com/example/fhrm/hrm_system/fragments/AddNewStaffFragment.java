@@ -34,7 +34,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocus;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocusSwitchFragment;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.getDepartmentList;
 import static com.example.fhrm.hrm_system.contants.FragmentControl.replace;
+import static com.example.fhrm.hrm_system.contants.FragmentControl.spinnerInterfaceList;
 
 /**
  * Created by luuhoangtruc on 21/01/2016.
@@ -73,22 +76,18 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        clearFocusSwitchFragment(getView(), getActivity());
     }
 
     private void initialize(View v) {
-        final Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
 
         DepartmentDao departmentDao = new DepartmentDao(getContext());
-        try {
-            departmentList = departmentDao.getAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        departmentList = getDepartmentList(departmentDao, getContext());
+
         List<String> arrayList = new ArrayList<String>();
         for (int i = 0; i < departmentList.size(); i++) {
             arrayList.add(departmentList.get(i).getNameDepartment());
@@ -99,16 +98,12 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
         textDate.setText(new StringBuilder()
                 .append(month + 1).append("-").append(day).append("-")
                 .append(year).append(" "));
-
         textDate.setOnClickListener(this);
         inputPhoneNumber = (EditText) v.findViewById(R.id.inputPhoneNumber);
         inputPhoneNumber.setOnClickListener(this);
         /*Spinner Department*/
         spinnerDepartment = (Spinner) v.findViewById(R.id.spinnerDepartmentName);
-        ArrayAdapter<String> adapterDepartment = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, arrayList);
-        adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDepartment.setAdapter(adapterDepartment);
+        spinnerInterfaceList(getContext(), spinnerDepartment, arrayList);
         spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -199,7 +194,6 @@ public class AddNewStaffFragment extends Fragment implements View.OnClickListene
             case R.id.buttonDatePicker:
                 onCreateDialog(DATE_DIALOG_ID).show();
                 break;
-
             case R.id.btnBack:
                 clearFocus(getContext(), inputStaffName, inputPhoneNumber, inputPlaceOfBirth);
                 replace(getFragmentManager(), R.id.flContent,

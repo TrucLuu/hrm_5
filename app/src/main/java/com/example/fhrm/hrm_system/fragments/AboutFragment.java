@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import com.example.fhrm.hrm_system.R;
 
+import static com.example.fhrm.hrm_system.contants.FragmentControl.clearFocusSwitchFragment;
+
 /**
  * Created by luuhoangtruc on 21/01/2016.
  */
@@ -25,6 +27,12 @@ public class AboutFragment extends Fragment {
         initialize(view);
         setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        clearFocusSwitchFragment(getView(), getActivity());
     }
 
     private void initialize(View view) {

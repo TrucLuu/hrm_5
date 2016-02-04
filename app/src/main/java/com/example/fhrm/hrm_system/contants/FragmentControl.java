@@ -1,5 +1,6 @@
 package com.example.fhrm.hrm_system.contants;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -34,14 +35,25 @@ public class FragmentControl {
                 .commit();
     }
 
-    public static void mySetText(Dialog dialog, int idInput, TextView textInput, String text) {
+    public static void mySetTextDialog(Dialog dialog, int idInput, TextView textInput, String text) {
         textInput = (TextView) dialog.findViewById(idInput);
         textInput.setText(text);
     }
 
+    public static void mySetTextfromEditText(View v, int idInput, EditText editText, String text) {
+        editText = (EditText) v.findViewById(idInput);
+        editText.setText(text);
+    }
+
     public static void spinnerInterface(Context context, Spinner spiner, int array) {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter
-                .createFromResource(context, array,android.R.layout.simple_spinner_item);
+                .createFromResource(context, array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(adapter);
+    }
+
+    public static void spinnerInterfaceList(Context context, Spinner spiner, List<String> string) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, string);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
     }
@@ -89,4 +101,8 @@ public class FragmentControl {
         }
     }
 
+    public static void clearFocusSwitchFragment(View view, Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
